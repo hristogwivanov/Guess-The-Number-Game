@@ -1,0 +1,152 @@
+<html>
+
+<head>
+    <title></title>
+</head>
+<style>
+    body {
+        background-color: rgb(240, 240, 235);
+        text-align: center;
+        font-family: sans-serif;
+    }
+
+    #main {
+        width: 70%;
+        max-width: 800px;
+        margin: auto;
+    }
+
+    #head {
+        background-color: purple;
+        color: whitesmoke
+    }
+
+    #mainbody {
+        background-color: rgb(3, 159, 159);
+        height: 460px;
+    }
+
+    #title {
+        color: whitesmoke;
+        font-weight: lighter;
+        font-stretch: narrower;
+        font-size: 24px;
+    }
+
+    #field {
+        height: 100px;
+        width: 500px;
+        text-align: center;
+        font-size: 62px;
+        border-radius: 5px;
+        border: 5px solid seagreen;
+    }
+
+    #submit {
+        margin-top: 40px;
+        height: 40px;
+        width: 300px;
+        background-color: yellow;
+        border: none;
+        border-radius: 17px;
+        font-size: 24px;
+    }
+
+    .info {
+        color: whitesmoke
+    }
+
+    #status {
+        background-color: purple;
+        color: whitesmoke;
+    }
+</style>
+
+<body>
+    <div id="main">
+        <div id="top">
+            <div id="head">
+                <h1>Number guessing game</h1>
+            </div>
+            <div id="lowerHead">
+                <p>Try and guess a random number between 1 and 100</p>
+                <p> You have 10 attempts to guess the right number.</p>
+            </div>
+        </div>
+        <div id="mainbody">
+            <div id="title">
+                <h1>Guess a number</h1>
+            </div>
+            <div id="form">
+
+                <input id="field" type="number"><br>
+                <input type="submit" value="Submit guess" id="submit"
+                    onclick="guess(document.getElementById('field').value)">
+
+            </div>
+            <div id="info-container">
+                <p id="previous" class="info" id="previous">Previous Guesses: 0</p>
+                <p id="remaining" class="info" id="remaining"> Guesses Remaining: 10</p>
+            </div>
+            <div id="status-container">
+                <h1 id="status"></h1>
+            </div>
+
+
+        </div>
+    </div>
+    <script>
+        let answer = Math.ceil(100 * Math.random());
+        let previous = 0;
+        let gameFinished = false;
+        function guess(input) {
+            let numberGuessed = Number(input);
+            console.log(numberGuessed);
+            if (gameFinished === true) {
+                document.getElementById("field").value = ``;
+                document.getElementById("submit").value = `Submit guess`;
+                document.getElementById("status").innerHTML = ``;
+                previous = 0;
+                document.getElementById("previous").innerHTML = `Previous Guesses: ${previous}`;
+                document.getElementById("remaining").innerHTML = `Guesses Remaining: ${10-previous}`;         
+                gameFinished = false;
+                return;
+            }
+            if (numberGuessed < 1 || numberGuessed > 100) {
+                console.log(`Invalid number`);
+                document.getElementById("status").innerHTML = `Number must be between 1 and 100!`;
+                document.getElementById("field").value = ``;
+                return;
+            }
+            console.log(answer);
+            if (answer === numberGuessed) {
+                document.getElementById("status").innerHTML = `Congratulations! This is the correct number!`;
+                answer = Math.ceil(100 * Math.random());
+                document.getElementById("submit").value = `Play again?`;
+                gameFinished = true;
+                return;
+            }
+            if (numberGuessed < answer) {
+                previous++;
+                document.getElementById("status").innerHTML = `Too low! Try again`;
+                document.getElementById("field").value = ``;
+            }
+            if (numberGuessed > answer) {
+                previous++;
+                document.getElementById("status").innerHTML = `Too high! Try again`;
+                document.getElementById("field").value = ``;
+            }
+            document.getElementById("previous").innerHTML = `Previous Guesses: ${previous}`;
+            document.getElementById("remaining").innerHTML = `Guesses Remaining: ${10-previous}`;
+            if(previous>=10){
+                document.getElementById("status").innerHTML = `You Lost! No more attempts!`;
+                answer = Math.ceil(100 * Math.random());
+                document.getElementById("submit").value = `Play again?`;
+                gameFinished = true;
+            }
+        }
+    </script>
+
+</body>
+
+</html>
